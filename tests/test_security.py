@@ -76,11 +76,17 @@ def test_password_hashing():
     assert check_password_hash(legacy, "default")
 
 
-def test_safe_join():
-    assert safe_join("foo", "bar/baz") == posixpath.join("foo", "bar/baz")
-    assert safe_join("foo", "../bar/baz") is None
-    if os.name == "nt":
-        assert safe_join("foo", "foo\\bar") is None
+@pytest.mark.parametrize(
+    ("path", "expect"),
+    [
+        ("bar/baz", posixpath.join("foo", "bar/baz")),
+        ("../bar/baz", None),
+        ("//server/share", None),
+        ("foo\\bar", None if os.name == "nt" else "foo/foo\\bar"),
+    ],
+)
+def test_safe_join(path, expect):
+    assert safe_join("foo", path) == expect
 
 
 def test_safe_join_os_sep():
