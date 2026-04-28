@@ -273,7 +273,10 @@ def safe_join(directory, *pathnames):
             any(sep in filename for sep in _os_alt_seps)
             or (
                 os.name == "nt"
-                and filename.partition(".")[0].strip().upper() in _windows_device_files
+                and any(
+                    p.partition(".")[0].strip().upper() in _windows_device_files
+                    for p in filename.split("/")
+                )
             )
             or os.path.isabs(filename)
             # ntpath.isabs doesn't catch this on Python < 3.11

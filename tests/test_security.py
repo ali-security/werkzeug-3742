@@ -99,7 +99,7 @@ def test_safe_join_os_sep():
 
 
 @pytest.mark.parametrize(
-    "name", ["CON", "CON.txt", "CON.txt.html", "CON  ", "CON . txt"]
+    "name", ["CON", "CON.txt", "CON.txt.html", "CON  ", "CON . txt", "b/CON"]
 )
 def test_safe_join_windows_special(monkeypatch, name):
     """Windows special device name is not allowed on Windows."""
