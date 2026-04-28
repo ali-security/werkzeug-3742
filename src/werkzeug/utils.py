@@ -25,6 +25,7 @@ from ._compat import unichr
 from ._internal import _DictAccessorProperty
 from ._internal import _missing
 from ._internal import _parse_signature
+from .security import _windows_device_files
 
 try:
     from html.entities import name2codepoint
@@ -35,19 +36,6 @@ except ImportError:
 _format_re = re.compile(r"\$(?:(%s)|\{(%s)\})" % (("[a-zA-Z_][a-zA-Z0-9_]*",) * 2))
 _entity_re = re.compile(r"&([^;]+);")
 _filename_ascii_strip_re = re.compile(r"[^A-Za-z0-9_.-]")
-_windows_device_files = (
-    "CON",
-    "AUX",
-    "COM1",
-    "COM2",
-    "COM3",
-    "COM4",
-    "LPT1",
-    "LPT2",
-    "LPT3",
-    "PRN",
-    "NUL",
-)
 
 
 class cached_property(property):

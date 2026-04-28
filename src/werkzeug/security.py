@@ -32,6 +32,32 @@ _sys_rng = SystemRandom()
 _os_alt_seps = list(
     sep for sep in [os.path.sep, os.path.altsep] if sep not in (None, "/")
 )
+_windows_device_files = {
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    "COM0",
+    "COM1",
+    "COM2",
+    "COM3",
+    "COM4",
+    "COM5",
+    "COM6",
+    "COM7",
+    "COM8",
+    "COM9",
+    "LPT0",
+    "LPT1",
+    "LPT2",
+    "LPT3",
+    "LPT4",
+    "LPT5",
+    "LPT6",
+    "LPT7",
+    "LPT8",
+    "LPT9",
+}
 
 
 def pbkdf2_hex(
@@ -238,6 +264,10 @@ def safe_join(directory, *pathnames):
 
         if (
             any(sep in filename for sep in _os_alt_seps)
+            or (
+                os.name == "nt"
+                and os.path.splitext(filename)[0].upper() in _windows_device_files
+            )
             or os.path.isabs(filename)
             # ntpath.isabs doesn't catch this on Python < 3.11
             or filename.startswith("/")

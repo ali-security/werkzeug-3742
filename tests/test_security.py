@@ -98,6 +98,14 @@ def test_safe_join_os_sep():
     sec._os_alt_steps = prev_value
 
 
+def test_safe_join_windows_special(monkeypatch):
+    """Windows special device name is not allowed on Windows."""
+    monkeypatch.setattr("os.name", "nt")
+    assert safe_join("a", "CON") is None
+    monkeypatch.setattr("os.name", "posix")
+    assert safe_join("a", "CON") == "a/CON"
+
+
 def test_pbkdf2():
     def check(data, salt, iterations, keylen, hashfunc, expected):
         rv = pbkdf2_hex(data, salt, iterations, keylen, hashfunc)
