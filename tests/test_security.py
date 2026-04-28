@@ -98,10 +98,16 @@ def test_safe_join_os_sep():
     sec._os_alt_steps = prev_value
 
 
-def test_safe_join_windows_special(monkeypatch):
+@pytest.mark.parametrize(
+    "name", ["CON", "CON.txt", "CON.txt.html", "CON  ", "CON . txt"]
+)
+def test_safe_join_windows_special(monkeypatch, name):
     """Windows special device name is not allowed on Windows."""
     monkeypatch.setattr("os.name", "nt")
-    assert safe_join("a", "CON") is None
+    assert safe_join("a", name) is None
+
+
+def test_safe_join_not_windows_special(monkeypatch):
     monkeypatch.setattr("os.name", "posix")
     assert safe_join("a", "CON") == "a/CON"
 

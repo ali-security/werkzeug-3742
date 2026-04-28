@@ -32,12 +32,12 @@ _sys_rng = SystemRandom()
 _os_alt_seps = list(
     sep for sep in [os.path.sep, os.path.altsep] if sep not in (None, "/")
 )
+# https://chrisdenton.github.io/omnipath/Special%20Dos%20Device%20Names.html
 _windows_device_files = {
-    "CON",
-    "PRN",
     "AUX",
-    "NUL",
-    "COM0",
+    "CON",
+    "CONIN$",
+    "CONOUT$",
     "COM1",
     "COM2",
     "COM3",
@@ -47,7 +47,9 @@ _windows_device_files = {
     "COM7",
     "COM8",
     "COM9",
-    "LPT0",
+    u"COM¹",
+    u"COM²",
+    u"COM³",
     "LPT1",
     "LPT2",
     "LPT3",
@@ -57,6 +59,11 @@ _windows_device_files = {
     "LPT7",
     "LPT8",
     "LPT9",
+    u"LPT¹",
+    u"LPT²",
+    u"LPT³",
+    "NUL",
+    "PRN",
 }
 
 
@@ -266,7 +273,7 @@ def safe_join(directory, *pathnames):
             any(sep in filename for sep in _os_alt_seps)
             or (
                 os.name == "nt"
-                and os.path.splitext(filename)[0].upper() in _windows_device_files
+                and filename.partition(".")[0].strip().upper() in _windows_device_files
             )
             or os.path.isabs(filename)
             # ntpath.isabs doesn't catch this on Python < 3.11
