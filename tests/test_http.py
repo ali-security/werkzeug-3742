@@ -446,6 +446,7 @@ class TestHTTPUtility(object):
         cookies = http.parse_cookie(
             "dismiss-top=6; CP=null*; PHPSESSID=0a539d42abc001cdc762809248d4beed;"
             ' a=42; b="\\";"; ; fo234{=bar;blub=Blah;'
+            "==__Host-eq=bad;__Host-eq=good;"
         )
         assert cookies.to_dict() == {
             "CP": u"null*",
@@ -455,6 +456,7 @@ class TestHTTPUtility(object):
             "b": u'";',
             "fo234{": u"bar",
             "blub": u"Blah",
+            "__Host-eq": u"good",
         }
 
     def test_dump_cookie(self):
