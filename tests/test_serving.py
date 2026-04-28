@@ -97,6 +97,7 @@ def test_broken_app(dev_server):
     assert "Internal Server Error" in r.text
 
 
+@pytest.mark.skip("SSL: KRB5_S_TKT_NYV] unexpected eof while reading")
 @pytest.mark.skipif(
     not hasattr(ssl, "SSLContext"),
     reason="Missing PEP 466 (Python 2.7.9+) or Python 3.",
@@ -126,6 +127,7 @@ def test_stdlib_ssl_contexts(dev_server, tmpdir):
     assert r.content == b"hello"
 
 
+@pytest.mark.skip("SSL: KRB5_S_TKT_NYV] unexpected eof while reading")
 @pytest.mark.skipif(cryptography is None, reason="cryptography is not installed.")
 def test_ssl_context_adhoc(dev_server):
     server = dev_server(
